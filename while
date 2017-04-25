@@ -1,0 +1,7 @@
+#! /bin/bash
+# written by jim.li
+read -p "Input yes/no : " yn
+while [ "${yn}" != "yes" -a "${yn}" != "no" ];do
+	read -p "Input yes/no : " yn
+done
+echo "You have the right answer!"
