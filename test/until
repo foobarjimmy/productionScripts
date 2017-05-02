@@ -1,7 +1,0 @@
-#! /bin/bash
-# written by jim.li@20170425
-read -p "Input your choice : " yn 
-until [ "${yn}" == "yes" ];do
-	echo "you have to type yes jump out of the until loop"
-	read -p "Input your choice : " yn
-done
