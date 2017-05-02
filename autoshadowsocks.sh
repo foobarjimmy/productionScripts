@@ -133,3 +133,5 @@ done
 systemctl restart iptables
 
 iptables -L -n |grep -a5 "INPUT" >> "${HOME}/install/install.log"
+
+echo -e "\033[32mShadowsocks Installation Succeeded!"
