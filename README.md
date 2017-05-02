@@ -1,19 +1,14 @@
 ========================================================
 # Program: Shadowsocks Auto Installer
-Usage:<br />
+Usage:
 
-	1.bash autoshadowsocks.sh [parameter:port-number]<br />
-
-	2.chmod +x autoshadowsocks.sh&&./autoshadowsocks<br />
-
-	3.System Requirement: CentOS 7<br />
-
+	1.bash autoshadowsocks.sh [parameter:port-number]
+	2.chmod +x autoshadowsocks.sh&&./autoshadowsocks
+	3.System Requirement: CentOS 7
 
 =========================================================
 # Program: Netspeeder Autoinstaller
-Usage:<br />
+Usage:
 
-	1.System Requirement: CentOS 5,6,7, Debian, Ubuntu<br />
-
-	2.Discription: Onekey Net-speeder Installer<br />
-
+	1.System Requirement: CentOS 5,6,7, Debian, Ubuntu
+	2.Discription: Onekey Net-speeder Installer
