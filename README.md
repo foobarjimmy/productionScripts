@@ -1,6 +1,7 @@
 ========================================================
 # Program: Shadowsocks Auto Installer
 Usage:<br />
+
 	1.bash autoshadowsocks.sh [parameter:port-number]<br />
 
 	2.chmod +x autoshadowsocks.sh&&./autoshadowsocks<br />
