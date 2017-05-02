@@ -1,0 +1,119 @@
+#! /bin/bash
+### Program: Shadowsocks&Netspeeder Auto Installer
+#
+### Author: Lisheng2016
+#
+### Contact: admin@wavejs.com
+#
+###script start:
+if [ -e "${HOME}/install" ];then
+	rm -rf "${HOME}/install"
+	mkdir "${HOME}/install"
+else 
+	mkdir "${HOME}/install"
+fi
+#creating install tmp file and log file directory
+
+if [ `which wget` == "" ];then
+	yum install -y wget
+fi
+
+if [ `which iptables` == "" ];then
+	yum install -y iptables
+fi
+#install wget&iptables if not exist
+
+firewalld_status=$(systemctl status firewalld | grep "Active" |awk -F " " '{print $2}')
+if [ "${firewalld_status}" == "active" ];then
+	systemctl stop firewalld
+	systemctl disable firewalld
+	echo "firewalld.service current active and now be disabled and stopped" >> "${HOME}/install/install.log"
+else 
+	echo "firewalld.service already disabled or not installed" >> "${HOME}/install/install.log"
+fi
+##disabled firewalld on Centos7
+
+yum install -y python-setuptools m2crypto && easy_install pip
+pip install shadowsocks
+
+#install shadowsocks
+port_num=2
+#port_num=$(echo "${1}" |awk '{print $1;}')
+for current_port in $(seq 1 ${port_num});do
+	read -p "Password for port ${current_port} " port[current_port]
+done
+#read port number and password for each port
+
+ipaddr=$(`which ip` addr |grep -a1 "eth0" |grep "inet" |awk -F " " '{print $2}' |cut -d "/" -f1)
+echo "${ipaddr}" >> "${HOME}/install/install.log"
+#get ip address
+if [ -f "/etc/shadowsocks" ];then
+	rm -f /etc/shadowsocks
+fi
+touch "/etc/shadowsocks.json"
+echo -e "{\n\"server\":\"${ipaddr}\",\n
+	\"port_password\":{\n" >> "${HOME}/install/install.log" >> /etc/shadowsocks.json
+for port in $(seq 1 ${port_num});do
+	echo -e "\"port${port}\":\"${port[port]}\",\n" >> /etc/shadowsocks.json
+done
+echo -e "\"timeout\":400,\n
+	\"method\":\"rc4-md5\",\n
+	\"fast_open\":false\n 
+	}" >> /etc/shadowsocks.json
+#create config file for starting shadowsocks
+
+easy_install supervisor
+if [ ! -e "/etc/supervisord.d" ];then
+	mkdir "/etc/supervisord.d"
+fi
+#install supervisor
+
+wget -O /etc/supervisord.d/shadowsocks.conf  https://wavejs.com/shadowsocks.conf --no-check-certificate
+echo -e "[include]\nfiles = /etc/supervisord.d/*.conf" >> /etc/supervisord.conf
+#download config file for supervisor on shadowsocks
+
+wget -O /usr/lib/systemd/system/supervisord.service https://wavejs.com/supervisord.service --no-check-certificate
+systemctl enable supervisord.service
+#enable supervisor to start with system
+
+supervisord
+supervisorctl reload
+#reload config file for supervisor on shadowsocks
+
+ulimit -n 51200
+echo -e "root soft nofile 51200\nroot hard nofile 51200" >> /etc/security/limits.conf
+wget -O /etc/sysctl.conf.example https://wavejs.com/sysctl.conf.example --no-check-certificate
+cat /etc/sysctl.conf.example >> /etc/sysctl.conf
+modprobe tcp_hybla
+sysctl -p
+#optimize kernel parameters
+
+yum groupinstall -y "Development Tools"
+wget -O "${HOME}/install/LATEST.tar.gz" https://download.libsodium.org/libsodium/releases/LATEST.tar.gz
+cd "${HOME}/install"
+tar zxf LATEST.tar.gz
+cd libsodium*
+./configure
+make&&make install
+echo "/usr/local/lib" > /etc/ld.so.conf.d/usr_local_lib.conf
+ldconfig
+#switch to chacha20
+
+sed -i "s/^\"m.*:\".*\",/\"method\":\"chacha20\",/i" /etc/shadowsocks.json
+sed -i "s/false/true/i" /etc/shadowsocks.json
+
+supervisorctl restart shadowsocks
+ 
+for port in $(seq 1 ${port_num};do
+	iptables -A INPUT -p tcp -dport ${port[port]} -j ACCEPT 
+done
+systemctl restart iptables
+
+iptables -L -n |grep -a5 "INPUT" >> "${HOME}/install/install.log"
+
+
+
+
+
+
+
