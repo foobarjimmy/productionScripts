@@ -1,0 +1,14 @@
+[Unit]
+Description=Shadowsocks autoupdate daemon
+After=network.target multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/root/ssautoupdate.sh 
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+RestartSec=42s
+RestartPreventExitStatus=255
+User=root
+Group=root

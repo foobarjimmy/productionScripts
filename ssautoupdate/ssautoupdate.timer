@@ -1,0 +1,10 @@
+[Unit]
+Description=Run ssautoupdate everyday
+
+[Timer]
+OnCalendar=*-*-* 00:00:00
+Persistent=true
+Unit=ssautoupdate.service
+
+[Install]
+WantedBy=multi-user.target
