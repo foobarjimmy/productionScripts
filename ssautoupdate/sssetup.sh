@@ -5,6 +5,7 @@ if [ "$#" != "1" ];then
 	exit 1
 fi
 echo -e "\033[32mShadowsocks autoupdate utility\033[0m"
+webroot="/root/notgonnaexist"
 while [ -e "${webroot}" ];do
 read -p "Please provide your website root directory : " webroot
 done
@@ -22,7 +23,7 @@ enable)
 	systemctl start ssautoupdate.service
 
 	systemctl enable ssautoupdate.timer
-	systemctl enable ssautoupdate.timer
+	systemctl start ssautoupdate.timer
 ;;
 disable)
 	echo -e "\033[32mremoving symbolic link & deleting files\033[0m"

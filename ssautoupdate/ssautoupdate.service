@@ -12,3 +12,6 @@ RestartSec=42s
 RestartPreventExitStatus=255
 User=root
 Group=root
+
+[Install]
+WantedBy=multi-user.target

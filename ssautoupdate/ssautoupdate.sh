@@ -12,4 +12,4 @@ for link in ${filelist};do
 	wget "${link}";
 done
 zip "Shadowsocks_wavejs_$(date +20%y%m%d).zip" /tmp/autodownload/*.zip
-mv /tmp/autodownload/Shadowsocks_wavejs.zip "WEBROOT"
+mv "/tmp/autodownload/Shadowsocks_wavejs_$(date +20%y%m%d).zip" "WEBROOT"
