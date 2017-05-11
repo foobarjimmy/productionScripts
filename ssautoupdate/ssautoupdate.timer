@@ -1,8 +1,8 @@
 [Unit]
-Description=Run ssautoupdate everyday
+Description=Run ssautoupdate monthly
 
 [Timer]
-OnCalendar=*-*-* 00:00:00
+OnCalendar=monthly
 Persistent=true
 Unit=ssautoupdate.service
 
