@@ -2,8 +2,8 @@
 Description=Run ssautoupdate monthly
 
 [Timer]
-OnCalendar=monthly
-Persistent=true
+OnCalendar=*-*-01 00:00:00
+Persistent=false
 Unit=ssautoupdate.service
 
 [Install]
