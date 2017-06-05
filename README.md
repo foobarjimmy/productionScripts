@@ -7,7 +7,7 @@ Usage:
 	3.System Requirement: CentOS 7
 
 =========================================================
-# Program: Netspeeder Autoinstaller
+# Program: Netspeeder Auto Installer
 Usage:
 
 	1.System Requirement: CentOS 5,6,7, Debian, Ubuntu
