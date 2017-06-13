@@ -36,7 +36,7 @@ function delete_list {
 }
 
 function add_task {
-	echo "INSERT INTO ${list_name} (name,description) VALUES ($name,$desc);" | mysql $dbname
+	echo "INSERT INTO ${list_name} (name,description) VALUES ('$name','$desc');" | mysql $dbname
 }
 
 function del_task {
@@ -44,9 +44,32 @@ function del_task {
 }
 
 function list_task {
-	if [ -z $2 ]
+	if [ "$list_name" == "" ]
 	then
 		echo "SHOW TABLES;" | mysql $dbname
 	else 
 		echo "SELECT * FROM $list_name;" | mysql $dbname
+	fi
 }
+
+case $action in
+	new-list)
+		create_list
+	;;
+	del-list)
+		delete_list
+	;;
+	add)
+		add_task
+	;;
+	del)
+		del_task
+	;;
+	ls)
+		list_task
+	;;
+	*)
+		exit 1
+#		echo "Usage:$0 [new-list|del-list|add|del|ls] [list_name]"
+	;;
+esac

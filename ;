@@ -1,0 +1,10 @@
+#! /bin/bash
+# add mysql user from passwd file
+file=/etc/passwd
+filellist=$(cat "$file" | cut -d: -f1)
+for user in ${filelist}
+do
+	echo "CREATE USER $user IDENTIFIED BY "expo2010";"|mysql
+done
+
+echo "SELECT user,host FROM mysql.user;"
