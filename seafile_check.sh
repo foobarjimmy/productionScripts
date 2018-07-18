@@ -24,12 +24,12 @@ fi
 
 if [ "${is_mount}" != "" ] 
 then
-    for field in $(seq 1 5)
+    for field in $(seq 1 6)
     do
         cmd="df -h | tr -s ' '| grep seafile-data | cut -d' ' -f${field}" 
         case $field in
             1)     
-                mapper_device=$(eval $cmd)
+                file_system=$(eval $cmd)
             ;;  
             
             2)
@@ -40,11 +40,15 @@ then
                 used_size=$(eval $cmd)
             ;;
             
-            4) 
+            4)
+                available=$(eval $cmd)
+            ;;
+            
+            5) 
                 percentage=$(eval $cmd)
             ;;
             
-            5)
+            6)
                 mount_point=$(eval $cmd)
             ;;
             
@@ -54,9 +58,10 @@ then
             ;;
         esac
     done
-    echo "mapper_device ==========> $mapper_device" >> $rep_file
+    echo "file_system ==========> $file_system" >> $rep_file
     echo "total_size ==========> $total_size" >> $rep_file
     echo "used_size ==========> $used_size" >> $rep_file
+    echo "available_size ==========> $available" >> $rep_file
     echo "percentage ==========> $percentage" >> $rep_file
     echo -e "mount_point ==========> $mount_point\n" >> $rep_file
     echo -e "#==================================================#\n" >> $rep_file
@@ -69,6 +74,6 @@ fi
 tail -n 10 /opt/seafile/logs/seafile.log >> $rep_file
 
 # send an email of status to root
-mail -r slireg2014@126.com -s "Seafile Server Daily Report" -q $rep_file wavejsctl@outlook.com<< EOF
+mail -r slireg2014@126.com -s "Seafile Server Daily Report" -q $rep_file wavejsctl@outlook.com << EOF
 ^D
 EOF
