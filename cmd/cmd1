@@ -1,1 +1,0 @@
-sudo sed -i 's#^acl homeip.*$#acl homeip src $public_ip/24#i' /etc/squid/squid.conf
