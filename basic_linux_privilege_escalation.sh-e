@@ -9,7 +9,7 @@ ALERT="\033[033m"
 # Command alias
 ECHO="echo -e"
 
-# Function definitions
+# Funtion definitions
 function echo_green () {
 	$ECHO "${GREEN}$1${RESET}"
 }
@@ -25,7 +25,7 @@ function echo_alert () {
 function dist_ver_check () {
 	echo_green "System Info:"
 	echo $(cat /etc/*-release)
-	echo
+	echo 
 }
 
 # Kernel version
@@ -58,20 +58,20 @@ function env_check () {
 	echo
 }
 
-# Check if there is a printer
+# Check if there is a printer 
 function lpstat_check () {
 	ifprinter=$(lpstat -a | grep "accepting requests")
 	if [ "${ifprinter}" != "" ]
 	then
 		echo_green "Found Printers:"
 		for printer in $(echo $ifprinter | cut -d" " -f1)
-		do
+		do	
 			echo $printer
 		done
 	else
 		echo_red "No Printers Found!"
 	fi
-	echo
+	echo 
 }
 
 # Running services with root privileges
@@ -80,7 +80,7 @@ function ps_check () {
 	# or ps aux | grep root
 }
 
-# Find installed applications,state and version
+# Find installed applications,state and version 
 function serv_check () {
 	echo_green "Applications && States Check:"
 	PKGMGR=$(which yum;which apt)
@@ -90,7 +90,7 @@ function serv_check () {
 	elif [[ 'echo "$PKGMGR" | grep apt' ]]; then
 		dpkg -l
 		ls -alh /var/cache/apt/archivesO
-	else
+	else 
 		echo_alert "Not supported yet!"
 	ls -alh /usr/bin/
 	ls -alh /sbin/
@@ -149,7 +149,7 @@ function net_info_check () {
 }
 
 # Users & hosts communicating with the system
-function comm_inter_check () {
+function comm_inter_check () { 
 	echo_green "Users & Hosts Communicating with the System:"
 	lsof -i
 	lsof -i :80
@@ -193,7 +193,7 @@ function sensi_file_check () {
 	ls -alh /var/mail/
 }
 
-# History check
+# History check 
 function hist_check () {
 	echo_green "Current User's History:"
 	cat ~/.bash_history
@@ -217,7 +217,7 @@ function priv_key_check () {
 			cat "${1}$file"
 		fi
 	done
-}
+}	
 
 # File Systems
 # Configuration files can be written in /etc/?
@@ -237,47 +237,46 @@ function conf_check () {
 function log_check () {
 	echo_alert "Log File Readability:"
 	list="
-            /etc/httpd/logs/access_log
-            /etc/httpd/logs/access.log
-            /etc/httpd/logs/error_log
-            /etc/httpd/logs/error.log
-            /var/log/apache2/access_log
-            /var/log/apache2/access.log
-            /var/log/apache2/error_log
-            /var/log/apache2/error.log
-            /var/log/apache/access_log
-            /var/log/apache/access.log
-            /var/log/auth.log
-            /var/log/chttp.log
-            /var/log/cups/error_log
-            /var/log/dpkg.log
-            /var/log/faillog
-            /var/log/httpd/access_log
-            /var/log/httpd/access.log
-            /var/log/httpd/error_log
-            /var/log/httpd/error.log
-            /var/log/lastlog
-            /var/log/lighttpd/access.log
-            /var/log/lighttpd/error.log
-            /var/log/lighttpd/lighttpd.access.log
-            /var/log/lighttpd/lighttpd.error.log
-            /var/log/messages
-            /var/log/secure
-            /var/log/syslog
-            /var/log/wtmp
-            /var/log/xferlog
-            /var/log/yum.log
-            /var/run/utmp
-            /var/webmin/miniserv.log
-            /var/www/logs/access_log
-            /var/www/logs/access.log
-            /var/lib/dhcp3/
-            /var/log/postgresql/
-            /var/log/proftpd/
-            /var/log/samba/
-        "
-
-	while read target; do
+ /etc/httpd/logs/access_log
+ /etc/httpd/logs/access.log
+ /etc/httpd/logs/error_log
+ /etc/httpd/logs/error.log
+ /var/log/apache2/access_log
+ /var/log/apache2/access.log
+ /var/log/apache2/error_log
+ /var/log/apache2/error.log
+ /var/log/apache/access_log
+ /var/log/apache/access.log
+ /var/log/auth.log
+ /var/log/chttp.log
+ /var/log/cups/error_log
+ /var/log/dpkg.log
+ /var/log/faillog
+ /var/log/httpd/access_log
+ /var/log/httpd/access.log
+ /var/log/httpd/error_log
+ /var/log/httpd/error.log
+ /var/log/lastlog
+ /var/log/lighttpd/access.log
+ /var/log/lighttpd/error.log
+ /var/log/lighttpd/lighttpd.access.log
+ /var/log/lighttpd/lighttpd.error.log
+ /var/log/messages
+ /var/log/secure
+ /var/log/syslog
+ /var/log/wtmp
+ /var/log/xferlog
+ /var/log/yum.log
+ /var/run/utmp
+ /var/webmin/miniserv.log
+ /var/www/logs/access_log
+ /var/www/logs/access.log
+ /var/lib/dhcp3/
+ /var/log/postgresql/
+ /var/log/proftpd/
+ /var/log/samba/
+"
+	if [[ -e "$target" ]]; do
 		if [[ -f "$target" ]];do
 			cat "$target"
 		elif [[ -d "$target" ]]; then
@@ -285,7 +284,7 @@ function log_check () {
 		else
 			echo_alert "Error!"
 		fi
-	done <<< "$list"
+	done
 }
 
 # File system check
@@ -296,7 +295,7 @@ function filesys_check () {
 	cat /etc/fstab
 }
 
-# Advanced Linux File Permissions
+# Advanced Linux File Permissions 
 # Sticky bits, SUID & GUID
 function fd_permission_check () {
 	echo_alert "Sticky Bit Folders:"
