@@ -2,9 +2,9 @@
 if [ ! $# -eq 2 ];then
     echo "Usage:$0 <student><grade>"
     exit 2
-fi 
+fi
 
-case $2 in 
+case $2 in
     [A-C]|[a-c])
         echo "$1 did a great job this  year!"
     ;;
